@@ -1,0 +1,3 @@
+jsonlines
+bs4
+python-docx
