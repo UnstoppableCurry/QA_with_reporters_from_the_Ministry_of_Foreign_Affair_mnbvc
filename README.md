@@ -9,6 +9,8 @@ MNBVC General Cleaning Script for the Q&amp;A Dataset of Foreign Ministry Journa
  
  3.clear_shtml_data.py -> 清洗 .shtml 网页 数据脚本
  
+ 4.最新版本格式对齐 与老版本不同 python t.py -> 正则清洗.html 网页数据
+ 
  # huggingface 地址
  
  https://huggingface.co/datasets/Iron-man/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs
@@ -16,7 +18,9 @@ MNBVC General Cleaning Script for the Q&amp;A Dataset of Foreign Ministry Journa
 
 # 数据格式
 shtml数据清洗
-353个文件,清洗2260条 条外交部记者问数据
+老版本: 353个文件,清洗2260条 条外交部记者问数据
+新版本: 1700个文件,清洗12877条 条外交部记者问数据
+
 
 ## 清洗前
 "<P style="FONT-FAMILY: arial; FONT-SIZE: 14px"　　答：当前东亚区域合作总体势头良好，为地区国家抗击疫情和经济复苏提供了积极助力。同时，全球疫情反弹波动，地区热点问题此起彼伏，东亚合作面临更多复杂因素。 /P>"
