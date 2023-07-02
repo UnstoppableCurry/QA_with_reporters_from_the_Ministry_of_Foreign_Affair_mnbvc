@@ -5,11 +5,13 @@ MNBVC General Cleaning Script for the Q&amp;A Dataset of Foreign Ministry Journa
 
  1.使用前 请安装环境 -> pip install -r requirements.txt
  
- 2.clear_docx_data.py ->清洗 .docx数据 脚本
+ 2.clear_docx_data.py ->清洗 .docx数据 脚本 （老版本已废弃）
  
- 3.clear_shtml_data.py -> 清洗 .shtml 网页 数据脚本
+ 3.clear_shtml_data.py -> 清洗 .shtml 网页 数据脚本（老版本已废弃）
  
- 4.最新版本格式对齐 与老版本不同 python t.py -> 正则清洗.html 网页数据
+ 4. 与老版本不同 python 答记者问.py -> 清洗答记者问QA网页数据  正则清洗  网页数据 （最新版本格式对齐）
+ 5. 与老版本不同 python 新闻发布会.py -> 清洗答新闻发布会QA网页数据  正则清洗  网页数据 （最新版本格式对齐）
+
  
  # huggingface 地址
  
