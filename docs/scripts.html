@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>脚本与清单 · 外交部记者问答清洗语料</title>
+  <meta name="description" content="仓库内清洗脚本、依赖、输入路径、输出文件，以及 wget_url.txt 中 420 条外交部发言人表态 URL 的年份分布。">
+  <link rel="canonical" href="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/scripts.html">
+  <meta name="theme-color" content="#f3eee3">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="外交部记者问答清洗语料">
+  <meta property="og:title" content="脚本与清单 · 外交部记者问答清洗语料">
+  <meta property="og:description" content="脚本职责、依赖与 wget_url.txt 计数，均来自本仓库文件。">
+  <meta property="og:url" content="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/scripts.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;700&amp;family=Noto+Serif+SC:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="./">
+        <span class="brand__mark" aria-hidden="true">问</span>
+        <span class="brand__text">
+          <span class="brand__title">外交部记者问答清洗语料</span>
+          <span class="brand__sub">MNBVC 清洗脚本与格式说明</span>
+        </span>
+      </a>
+      <button type="button" class="nav-toggle" data-nav-toggle aria-controls="site-nav" aria-expanded="false">菜单</button>
+      <nav id="site-nav" class="site-nav" data-nav aria-label="主导航">
+        <ul>
+          <li><a href="./">概览</a></li>
+          <li><a href="./format.html">格式规范</a></li>
+          <li><a href="./pipeline.html">清洗逻辑</a></li>
+          <li><a href="./examples.html">对照示例</a></li>
+          <li><a href="./scripts.html" aria-current="page">脚本与清单</a></li>
+          <li><a href="./notes.html">证据与声明</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="kicker">Inventory</p>
+        <h1>脚本、依赖与 URL 清单</h1>
+        <p class="lede">本页只清点当前仓库树里的文件。原始 <code>.shtml</code> / <code>.docx</code> / <code>test/</code> HTML 不在本仓库中；脚本里的绝对路径属于原作者机器，克隆后不能直接运行，除非自行准备同等输入。</p>
+      </div>
+    </div>
+
+    <div class="wrap main">
+      <div class="table-wrap" role="region" aria-label="脚本一览" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">文件</th>
+              <th scope="col">README 状态</th>
+              <th scope="col">输入</th>
+              <th scope="col">输出</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><code>答记者问.py</code></th>
+              <td><span class="badge badge--new">现行</span></td>
+              <td><code>test/*.html</code></td>
+              <td><code>./testsss.json</code></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>新闻发布会.py</code></th>
+              <td><span class="badge badge--new">现行</span></td>
+              <td><code>test/*.html</code></td>
+              <td><code>./data4shtml1.json</code></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>t.py</code></th>
+              <td>未在 README 点名</td>
+              <td><code>test/*.html</code></td>
+              <td><code>./data4shtml1.json</code>（无日期字段）</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>clear_shtml_data.py</code></th>
+              <td><span class="badge badge--old">废弃</span></td>
+              <td>硬编码 <code>…/20180224-20230416外交部表态/raw/*.shtml</code></td>
+              <td><code>./data.json</code></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>clear_docx_data.py</code></th>
+              <td><span class="badge badge--old">废弃</span></td>
+              <td>硬编码 <code>…/中英对照/*.docx</code></td>
+              <td><code>./data4docx.json</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <section class="prose" aria-labelledby="deps">
+        <h2 id="deps">依赖</h2>
+        <p><code>requirements.txt</code> 三行：</p>
+      </section>
+      <figure class="panel">
+        <header>
+          <h3><code>requirements.txt</code></h3>
+          <button type="button" class="button button--small button--ghost" data-copy="reqs" data-label="复制">复制</button>
+        </header>
+        <pre class="figure-code" id="reqs"><code>jsonlines
+bs4
+python-docx</code></pre>
+      </figure>
+      <p class="prose"><code>答记者问.py</code>、<code>新闻发布会.py</code>、<code>t.py</code> 均 <code>from bs4 import BeautifulSoup</code>，但现行主路径用正则抽中文，未调用该解析器。<code>clear_wen</code> 需要 <code>jieba</code>，未列入 requirements。</p>
+
+      <section class="prose" aria-labelledby="urls">
+        <h2 id="urls"><code>wget_url.txt</code></h2>
+        <p>对仓库文件去空行后计数：<strong>420</strong> 条唯一 URL。主机全部为 <code>www.mfa.gov.cn</code>，路径前缀均为 <code>/web/wjdt_674879/fyrbt_674889/</code>（外交部网站「发言人表态」栏目的现用路径形态）。按路径中的 <code>/YYYYMM/</code> 分段：</p>
+      </section>
+
+      <div class="table-wrap" role="region" aria-label="URL 年份分布" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">年份</th>
+              <th scope="col">URL 条数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">2018</th><td>46</td></tr>
+            <tr><th scope="row">2019</th><td>30</td></tr>
+            <tr><th scope="row">2020</th><td>54</td></tr>
+            <tr><th scope="row">2021</th><td>45</td></tr>
+            <tr><th scope="row">2022</th><td>169</td></tr>
+            <tr><th scope="row">2023</th><td>76</td></tr>
+            <tr><th scope="row">合计</th><td>420</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose">最早月份 <code>201802</code>，最晚月份 <code>202304</code>。这是清单覆盖范围，不是「语料已清洗到这些日期」的证明。它也<strong>不等于</strong> README 的 353 或 1700 个文件。</p>
+      <p class="prose">清单中与 README 示例标题同一天的一条：</p>
+      <p class="prose"><a href="https://www.mfa.gov.cn/web/wjdt_674879/fyrbt_674889/202211/t20221104_10800749.shtml" rel="noopener noreferrer">https://www.mfa.gov.cn/web/wjdt_674879/fyrbt_674889/202211/t20221104_10800749.shtml</a></p>
+
+      <section class="prose" aria-labelledby="hf-files">
+        <h2 id="hf-files">Hugging Face 入口</h2>
+        <p>README 给出：</p>
+        <p><a href="https://huggingface.co/datasets/Iron-man/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs" rel="noopener noreferrer">https://huggingface.co/datasets/Iron-man/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs</a></p>
+        <p>该 URL 当前以 HTTP 307 转到 <code>/datasets/wangtianxin/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs</code>。数据集卡片文本同样写了 shtml「1700 个文件，清洗 12877 条」，并回链 GitHub。本站不列举平台上的下载次数或点赞。</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p>URL 年份分布由本仓库 <code>wget_url.txt</code> 直接计数。</p>
+      <nav aria-label="页脚链接">
+        <a href="./notes.html">下一步：证据与声明</a>
+        <a href="./examples.html">返回对照示例</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="./js/site.js" defer></script>
+</body>
+</html>

@@ -1,6 +1,10 @@
 # QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc
 MNBVC General Cleaning Script for the Q&amp;A Dataset of Foreign Ministry Journalists
 
+文档站（GitHub Pages，中文）：https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/
+
+静态源文件在 [`docs/`](docs/)，由 [GitHub Actions Pages 工作流](.github/workflows/pages.yml) 发布，内容整理自本 README 与清洗脚本，不另造数据规模或法律声明。
+
 # 通用外交部数据清洗脚本集合
 
  1.使用前 请安装环境 -> pip install -r requirements.txt

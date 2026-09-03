@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>证据与声明 · 外交部记者问答清洗语料</title>
+  <meta name="description" content="本站内容边界：只采用 README、源码与仓库文件可核验的陈述。不编造规模、评测、用户或超出仓库的法律主张。">
+  <link rel="canonical" href="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/notes.html">
+  <meta name="theme-color" content="#f3eee3">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="外交部记者问答清洗语料">
+  <meta property="og:title" content="证据与声明 · 外交部记者问答清洗语料">
+  <meta property="og:description" content="文档站的证据边界与许可证说明。">
+  <meta property="og:url" content="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/notes.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;700&amp;family=Noto+Serif+SC:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="./">
+        <span class="brand__mark" aria-hidden="true">问</span>
+        <span class="brand__text">
+          <span class="brand__title">外交部记者问答清洗语料</span>
+          <span class="brand__sub">MNBVC 清洗脚本与格式说明</span>
+        </span>
+      </a>
+      <button type="button" class="nav-toggle" data-nav-toggle aria-controls="site-nav" aria-expanded="false">菜单</button>
+      <nav id="site-nav" class="site-nav" data-nav aria-label="主导航">
+        <ul>
+          <li><a href="./">概览</a></li>
+          <li><a href="./format.html">格式规范</a></li>
+          <li><a href="./pipeline.html">清洗逻辑</a></li>
+          <li><a href="./examples.html">对照示例</a></li>
+          <li><a href="./scripts.html">脚本与清单</a></li>
+          <li><a href="./notes.html" aria-current="page">证据与声明</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="kicker">Evidence</p>
+        <h1>本站写了什么，以及明确没写什么</h1>
+        <p class="lede">这是一份静态说明，不是外交部官网，也不是在线语料浏览器。文字、数字和例子都能指回 README、Python 源码或 <code>wget_url.txt</code>。下面列出边界，避免把文档读成评测报告或授权声明。</p>
+      </div>
+    </div>
+
+    <div class="wrap main">
+      <section class="prose" aria-labelledby="used">
+        <h2 id="used">采用的证据</h2>
+        <ul>
+          <li>仓库 README：项目名称、脚本代际、Hugging Face 链接、shtml / 中英对照数量记载、清洗前后示例、MIT 许可证行。</li>
+          <li>五个 Python 文件与 <code>requirements.txt</code>：字段名、切分正则、替换表、输入输出路径。</li>
+          <li><code>wget_url.txt</code>：420 条 <code>www.mfa.gov.cn</code> URL，以及由路径读出的年月分布。</li>
+          <li>对 README 所给 Hugging Face 地址的 HTTP 访问：确认该链接存在，并 307 重定向到同名数据集路径。</li>
+        </ul>
+      </section>
+
+      <section class="prose" aria-labelledby="not-used">
+        <h2 id="not-used">没有写进本站的内容</h2>
+        <ul>
+          <li>未经仓库复算的新数据规模、token 数、语言比例。</li>
+          <li>任何基准分数、模型效果、标注质量评估。</li>
+          <li>Hugging Face 下载量、点赞、使用者或机构背书。</li>
+          <li>把 <code>wget_url.txt</code> 的 420 条等同于 353 / 1700 / 12877。</li>
+          <li>把 README 清洗前残片说成清洗后 JSON 的原文。</li>
+          <li>原始网页全文的版权归属、再分发许可，或「官方授权语料」一类主张。仓库只表明脚本处理公开网页/文档，以及 README 对<strong>本仓库脚本</strong>使用 MIT。</li>
+          <li>MNBVC 项目整体的组织架构或其它子集；名称只出现在 README 标题里。</li>
+        </ul>
+      </section>
+
+      <section class="prose" aria-labelledby="license">
+        <h2 id="license">许可证</h2>
+        <p>README 文末为：</p>
+        <pre><code>---
+license: mit
+---</code></pre>
+        <p>本站把它读作：仓库声明脚本与说明文本按 MIT 许可。这不自动覆盖外交部网站原文。使用发布语料时请同时阅读 Hugging Face 数据集页上的许可与注意事项。</p>
+      </section>
+
+      <section class="prose" aria-labelledby="a11y">
+        <h2 id="a11y">文档站自身</h2>
+        <ul>
+          <li>静态 HTML / CSS，脚本只用于展开导航和复制代码块。</li>
+          <li>页面语言 <code>zh-Hans</code>；提供跳过导航、当前页 <code>aria-current</code>、可见焦点与对比色。</li>
+          <li>项目页地址：<a href="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/">https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/</a>。需在仓库 Settings → Pages 将来源设为 GitHub Actions 后，官方工作流才会发布 <code>docs/</code>。</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p>发现文档与源码不符时，以仓库文件为准。</p>
+      <nav aria-label="页脚链接">
+        <a href="./">返回概览</a>
+        <a href="https://github.com/UnstoppableCurry/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc" rel="noopener noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="./js/site.js" defer></script>
+</body>
+</html>
