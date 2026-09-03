@@ -345,6 +345,15 @@ h3 {
 .stat,
 .card,
 .panel,
+.figure-code,
+pre,
+.table-wrap {
+  min-width: 0;
+}
+
+.stat,
+.card,
+.panel,
 .callout,
 .toc {
   background: var(--paper-raised);
@@ -402,6 +411,10 @@ h3 {
   padding-left: 1.2rem;
 }
 
+.prose a {
+  overflow-wrap: anywhere;
+}
+
 .toc {
   padding: 1rem 1.1rem;
   margin: 0 0 1.5rem;
@@ -440,7 +453,7 @@ h3 {
 
 .compare {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1rem;
   margin: 1rem 0 1.8rem;
 }
@@ -517,6 +530,9 @@ pre {
   color: var(--code-fg);
   font-size: 0.82rem;
   line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .token-key { color: var(--code-key); }
@@ -607,7 +623,7 @@ th {
   .stat-grid,
   .link-grid,
   .compare {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 }
 
