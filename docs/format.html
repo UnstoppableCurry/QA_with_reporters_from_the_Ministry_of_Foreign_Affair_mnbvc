@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>格式规范 · 外交部记者问答清洗语料</title>
+  <meta name="description" content="外交部记者问答清洗结果的三种字段约定：shtml 网页 JSON、中英对照嵌套对象，以及现行脚本的问/答/来源/元数据。">
+  <link rel="canonical" href="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/format.html">
+  <meta name="theme-color" content="#f3eee3">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="外交部记者问答清洗语料">
+  <meta property="og:title" content="格式规范 · 外交部记者问答清洗语料">
+  <meta property="og:description" content="shtml、中英对照与现行脚本三种输出字段的对照说明。">
+  <meta property="og:url" content="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/format.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;700&amp;family=Noto+Serif+SC:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="./">
+        <span class="brand__mark" aria-hidden="true">问</span>
+        <span class="brand__text">
+          <span class="brand__title">外交部记者问答清洗语料</span>
+          <span class="brand__sub">MNBVC 清洗脚本与格式说明</span>
+        </span>
+      </a>
+      <button type="button" class="nav-toggle" data-nav-toggle aria-controls="site-nav" aria-expanded="false">菜单</button>
+      <nav id="site-nav" class="site-nav" data-nav aria-label="主导航">
+        <ul>
+          <li><a href="./">概览</a></li>
+          <li><a href="./format.html" aria-current="page">格式规范</a></li>
+          <li><a href="./pipeline.html">清洗逻辑</a></li>
+          <li><a href="./examples.html">对照示例</a></li>
+          <li><a href="./scripts.html">脚本与清单</a></li>
+          <li><a href="./notes.html">证据与声明</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="kicker">Schema</p>
+        <h1>数据格式：三种可核验的写出约定</h1>
+        <p class="lede">README「数据格式」给出网页清洗与中英对照两类示例；现行 <code>答记者问.py</code> / <code>新闻发布会.py</code> 则另写一套中文字段。下面按源码与 README 分列，不把它们说成已经互相迁移完成。</p>
+      </div>
+    </div>
+
+    <div class="wrap main">
+      <nav class="toc" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">本页目录</h2>
+        <ol>
+          <li><a href="#shtml-format">shtml / 网页记录（README + 老脚本）</a></li>
+          <li><a href="#bilingual-format">中英对照嵌套对象</a></li>
+          <li><a href="#current-format">现行脚本：问 / 答 / 来源 / 元数据</a></li>
+          <li><a href="#date-notes">日期与标题怎么来</a></li>
+        </ol>
+      </nav>
+
+      <section class="prose" aria-labelledby="shtml-format">
+        <h2 id="shtml-format">shtml / 网页记录</h2>
+        <p>README 清洗后示例，以及 <code>clear_shtml_data.py</code> 写出的对象，字段一致。每条对应一次提问与一次回答；<code>input</code> 在源码里始终写成空字符串。</p>
+      </section>
+
+      <div class="table-wrap" role="region" aria-label="shtml 字段表" tabindex="0">
+        <table>
+          <caption class="visually-hidden">shtml 输出字段</caption>
+          <thead>
+            <tr>
+              <th scope="col">字段</th>
+              <th scope="col">类型（源码字面）</th>
+              <th scope="col">含义（据脚本赋值）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><code>input</code></th>
+              <td>空字符串</td>
+              <td>固定为 <code>''</code>，脚本未填上下文。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>instruction</code></th>
+              <td>字符串</td>
+              <td>记者提问。老脚本会去掉「发言人」，并把提问中的「中方」替换为「你」。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>output</code></th>
+              <td>字符串</td>
+              <td>发言人回答。老脚本会把回答中的「中方」替换为「我方」，并截到第一个 <code>&lt;/div&gt;</code>。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>date</code></th>
+              <td>字符串</td>
+              <td>从页面 <code>&lt;title&gt;</code> 里「年 / 月 / 日」改写成 <code>YYYY-M-D</code>；标题不含日期时为空。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>title</code></th>
+              <td>字符串</td>
+              <td>BeautifulSoup 取出的 <code>title</code> 文本。README 示例带「_中华人民共和国外交部」后缀。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure class="panel">
+        <header>
+          <h3>README 清洗后示例（shtml）</h3>
+          <button type="button" class="button button--small button--ghost" data-copy="shtml-after" data-label="复制">复制</button>
+        </header>
+        <figcaption class="note">文本取自 README，仅做换行与缩进。完整对照见 <a href="./examples.html">对照示例</a>。</figcaption>
+        <pre class="figure-code" id="shtml-after"><code>{
+  <span class="token-key">"input"</span>: <span class="token-str">""</span>,
+  <span class="token-key">"instruction"</span>: <span class="token-str">"能否介绍李克强总理访问柬埔寨有关安排？你如何看待当前中柬关系？"</span>,
+  <span class="token-key">"output"</span>: <span class="token-str">"中柬是友好邻邦和铁杆朋友。…更好地惠及两国人民。"</span>,
+  <span class="token-key">"date"</span>: <span class="token-str">"2022-11-4"</span>,
+  <span class="token-key">"title"</span>: <span class="token-str">"2022年11月4日外交部发言人赵立坚主持例行记者会_中华人民共和国外交部"</span>
+}</code></pre>
+      </figure>
+
+      <section class="prose" aria-labelledby="bilingual-format">
+        <h2 id="bilingual-format">中英对照嵌套对象</h2>
+        <p><code>clear_docx_data.py</code> 为每一对问答写出 <code>{"en": …, "zh": …}</code>。中英两侧字段名相同；<code>output</code> 是数组，因为脚本按段落把中文与非中文答句分开收集。</p>
+      </section>
+
+      <div class="table-wrap" role="region" aria-label="中英对照字段表" tabindex="0">
+        <table>
+          <caption class="visually-hidden">中英对照输出字段</caption>
+          <thead>
+            <tr>
+              <th scope="col">路径</th>
+              <th scope="col">赋值来源（源码）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><code>zh.instruction</code></th>
+              <td>「问：」之后、「Q:」之前的中文提问。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>en.instruction</code></th>
+              <td>「Q:」之后、「答」之前的英文提问。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>zh.output</code> / <code>en.output</code></th>
+              <td>「答：」之后按不间断空格切开；含汉字的段落进 <code>zh</code>，其余进 <code>en</code>。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>*.date</code></th>
+              <td>标题里括号日期 <code>（YYYY年M月D日）</code>，年/月替换为连字符。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>zh.title</code></th>
+              <td>括号日期之前的中文标题。</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>en.title</code></th>
+              <td>括号日期之后的英文标题。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <section class="prose" aria-labelledby="current-format">
+        <h2 id="current-format">现行脚本字段</h2>
+        <p>README 称 <code>答记者问.py</code> 与 <code>新闻发布会.py</code> 为「最新版本格式对齐」。源码写出的却是中文键，而不是 README 示例里的 <code>instruction</code> / <code>output</code>。两条流水线共用「问 / 答 / 元数据」，<code>来源</code> 字符串不同。</p>
+      </section>
+
+      <div class="table-wrap" role="region" aria-label="现行脚本字段表" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">字段</th>
+              <th scope="col"><code>答记者问.py</code></th>
+              <th scope="col"><code>新闻发布会.py</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><code>id</code></th>
+              <td>从 <code>10597</code> 起递增</td>
+              <td>从 <code>0</code> 起递增</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>问</code> / <code>答</code></th>
+              <td colspan="2">切分后的问答文本，再去掉 <code>141</code>、<code>14</code>、<code>1267</code> 等残留</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>来源</code></th>
+              <td><code>外交部答记者问</code></td>
+              <td><code>外交部新闻发布会</code></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>元数据.create_time</code></th>
+              <td>正文里匹配到的「YYYY年M月D日」，再交给 <code>get_years</code></td>
+              <td>同样日期改写成 <code>YYYYMMDD</code></td>
+            </tr>
+            <tr>
+              <th scope="row"><code>元数据.回答明细</code> 等</th>
+              <td colspan="2">模板里留空字符串，主流程未赋值</td>
+            </tr>
+            <tr>
+              <th scope="row">输出文件</th>
+              <td><code>./testsss.json</code>（jsonlines 追加）</td>
+              <td><code>./data4shtml1.json</code>（jsonlines 追加）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <figure class="panel">
+        <header>
+          <h3>现行对象骨架（源码字面）</h3>
+          <button type="button" class="button button--small button--ghost" data-copy="current-skel" data-label="复制">复制</button>
+        </header>
+        <pre class="figure-code" id="current-skel"><code>{
+  <span class="token-key">"id"</span>: <span class="token-mute">0</span>,
+  <span class="token-key">"问"</span>: <span class="token-str">""</span>,
+  <span class="token-key">"答"</span>: <span class="token-str">""</span>,
+  <span class="token-key">"来源"</span>: <span class="token-str">"外交部答记者问"</span>,
+  <span class="token-key">"元数据"</span>: {
+    <span class="token-key">"create_time"</span>: <span class="token-str">""</span>,
+    <span class="token-key">"回答明细"</span>: <span class="token-str">""</span>,
+    <span class="token-key">"问题明细"</span>: <span class="token-str">""</span>,
+    <span class="token-key">"扩展字段"</span>: <span class="token-str">""</span>
+  }
+}</code></pre>
+      </figure>
+
+      <section class="prose" aria-labelledby="date-notes">
+        <h2 id="date-notes">日期与标题</h2>
+        <ul>
+          <li>老 shtml 脚本：日期只来自 HTML <code>title</code>，例如把「2022年11月4日…」切成 <code>2022-11-4</code>。与 README 示例一致。</li>
+          <li>docx 脚本：要求标题含 <code>（YYYY年M月D日）</code>。</li>
+          <li>现行网页脚本：在抽出的中文正文里用正则 <code>\d{4}年\d{1,2}月\d{1,2}日</code> 找第一条；找不到则为 <code>None</code>。</li>
+        </ul>
+        <p>因此「同一场记者会」在不同脚本里，日期字符串形态可能是 <code>2022-11-4</code> 或 <code>20221104</code>。这是源码差异，不是额外规范。</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p>字段说明只对照 README 与 <code>*.py</code> 赋值语句。</p>
+      <nav aria-label="页脚链接">
+        <a href="./pipeline.html">下一步：清洗逻辑</a>
+        <a href="./">返回概览</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="./js/site.js" defer></script>
+</body>
+</html>

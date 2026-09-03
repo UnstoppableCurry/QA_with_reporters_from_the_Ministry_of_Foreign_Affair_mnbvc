@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/sitemap.xml

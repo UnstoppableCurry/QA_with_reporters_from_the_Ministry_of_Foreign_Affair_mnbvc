@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>清洗逻辑 · 外交部记者问答清洗语料</title>
+  <meta name="description" content="依据源码整理的外交部记者问答清洗步骤：HTML 抽中文、问答应切分、字号残留清理、发言人与媒体名处理。">
+  <link rel="canonical" href="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/pipeline.html">
+  <meta name="theme-color" content="#f3eee3">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="外交部记者问答清洗语料">
+  <meta property="og:title" content="清洗逻辑 · 外交部记者问答清洗语料">
+  <meta property="og:description" content="shtml、docx 与现行正则脚本的清洗步骤，全部来自仓库源码。">
+  <meta property="og:url" content="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/pipeline.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;700&amp;family=Noto+Serif+SC:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="./">
+        <span class="brand__mark" aria-hidden="true">问</span>
+        <span class="brand__text">
+          <span class="brand__title">外交部记者问答清洗语料</span>
+          <span class="brand__sub">MNBVC 清洗脚本与格式说明</span>
+        </span>
+      </a>
+      <button type="button" class="nav-toggle" data-nav-toggle aria-controls="site-nav" aria-expanded="false">菜单</button>
+      <nav id="site-nav" class="site-nav" data-nav aria-label="主导航">
+        <ul>
+          <li><a href="./">概览</a></li>
+          <li><a href="./format.html">格式规范</a></li>
+          <li><a href="./pipeline.html" aria-current="page">清洗逻辑</a></li>
+          <li><a href="./examples.html">对照示例</a></li>
+          <li><a href="./scripts.html">脚本与清单</a></li>
+          <li><a href="./notes.html">证据与声明</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="page-hero">
+      <div class="wrap">
+        <p class="kicker">Pipeline</p>
+        <h1>清洗逻辑：从网页标记到问答记录</h1>
+        <p class="lede">README 把现行脚本概括为「正则清洗网页数据」。下面按文件把分支、分隔符和替换表写出来，便于对照源码，而不是用流程图假装已经产品化。</p>
+      </div>
+    </div>
+
+    <div class="wrap main">
+      <section aria-labelledby="old-shtml">
+        <h2 id="old-shtml">老版本 <code>clear_shtml_data.py</code> <span class="badge badge--old">README：已废弃</span></h2>
+        <div class="flow">
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">1</span>
+            <div>
+              <h3>读入 <code>.shtml</code></h3>
+              <p>遍历硬编码目录 <code>/www/baidu/外交部/外交部问答/20180224-20230416外交部表态/raw/</code>。目录名里的日期闭区间与 <code>wget_url.txt</code> 的年月跨度 201802–202304 一致。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">2</span>
+            <div>
+              <h3>标题与日期</h3>
+              <p>若正文含 <code>title</code>，用 BeautifulSoup 取标题。标题含「年 / 月 / 日」时，取「日」前一段并把年、月换成 <code>-</code>。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">3</span>
+            <div>
+              <h3>先修 HTML 粘连</h3>
+              <p>把 <code>记者&lt;/strong&gt;&lt;strong …&gt;：</code> 与 <code>记者&lt;/strong&gt;&lt;strong&gt;：</code> 收成 <code>记者：</code>，避免切分点落在标签中间。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">4</span>
+            <div>
+              <h3>两条问答切分</h3>
+              <p>若同时出现 <code>问：</code> 与 <code>答：</code>，按 <code>问：</code> 切开，再在每段用 <code>答：</code> 分成提问 / 回答，回答截到 <code>&lt;/div&gt;</code>。否则若出现 <code>记者：</code>，再按发言人姓名切开。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">5</span>
+            <div>
+              <h3>用过的发言人姓名</h3>
+              <p>源码列表为：汪文斌、赵立坚、毛宁、华春莹、耿爽（均带中文冒号）。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">6</span>
+            <div>
+              <h3>媒体名截尾</h3>
+              <p>内嵌 85 个媒体字符串（去重后 84 个；<code>日报广播协会</code> 重复一次），按长度降序排序后，用于去掉提问末尾的机构名。列表见源码 <code>jizhes</code>，本页不重抄以免与脚本漂移。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">7</span>
+            <div>
+              <h3>措辞替换后写 jsonlines</h3>
+              <p>提问：删除「发言人」，「中方」→「你」。回答：「中方」→「我方」。全角空格改半角并 <code>strip</code>。写出 <code>./data.json</code>。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="docx-pipe">
+        <h2 id="docx-pipe">老版本 <code>clear_docx_data.py</code> <span class="badge badge--old">README：已废弃</span></h2>
+        <div class="flow">
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">1</span>
+            <div>
+              <h3>拼接段落</h3>
+              <p>读取 <code>/www/baidu/外交部/外交部问答/中英对照/*.docx</code>，把所有段落文本连成一篇。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">2</span>
+            <div>
+              <h3>按「问：」切块</h3>
+              <p>第一块当作整份文件标题；其后每一块应含 <code>Q:</code> 与 <code>答：</code>。若 <code>答</code> 前无法拆出 <code>Q:</code>，脚本打印 <code>error</code> 仍继续。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">3</span>
+            <div>
+              <h3>中英答句分流</h3>
+              <p>去掉 <code>A:</code> 后按不间断空格切段。用 <code>[\u4e00-\u9fa5]+</code> 判断是否含汉字：有则进中文 <code>output</code> 数组，否则进英文数组。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="current-pipe">
+        <h2 id="current-pipe">现行正则脚本 <span class="badge badge--new">README：最新版本</span></h2>
+        <p class="prose">两条现行脚本都从 <code>test/</code> 下的 <code>.html</code> 读入，先用正则只保留汉字、数字和部分标点，再按「问 / 答」附近的数字痕迹切分。进度打印里的分母写死为 <code>1700</code>，与 README 新版本文件数相同。</p>
+
+        <h3>共同的文本抽出</h3>
+        <p class="prose"><code>答记者问.py</code> 使用 <code>[\u4e00-\u9fa50-9，。？！、\n]+</code>；<code>新闻发布会.py</code> 与 <code>t.py</code> 不保留换行。英文字母不在保留集合里，因此现行网页脚本不会产出 README 那种英文字段。</p>
+
+        <h3><code>答记者问.py</code> 的切分</h3>
+        <div class="flow">
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">1</span>
+            <div>
+              <p>用 <code>社记者</code> 预检：切分后不足 3 段则跳过该文件。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">2</span>
+            <div>
+              <p>再用 <code>14问</code> 切开。首尾两段丢弃。中间段按 <code>？\n14</code> 拆成问、答。这里的 <code>14</code> 与 README 清洗前示例里的 <code>FONT-SIZE: 14px</code> 对得上：抽中文时字号数字会粘在「问」前面。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">3</span>
+            <div>
+              <p>写出前再删 <code>141</code>、<code>1414</code>、<code>14</code>、<code>1267</code>，并把 <code>。1</code> / <code>？1</code> 收成句读。去掉换行。</p>
+            </div>
+          </div>
+        </div>
+
+        <h3><code>新闻发布会.py</code> 的切分</h3>
+        <div class="flow">
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">1</span>
+            <div>
+              <p>按 <code>\d答</code> 切开，再按 <code>\d问</code> 切开。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">2</span>
+            <div>
+              <p>去掉连续 7 位及以上数字；再按 <code>？.{0,5}答</code> 分开问句尾与答句。</p>
+            </div>
+          </div>
+          <div class="flow__step">
+            <span class="flow__index" aria-hidden="true">3</span>
+            <div>
+              <p>若片段仍含「问」，再用标点加「问」二次切开。最后按奇偶配对问答，并跳过每篇末尾两条。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="callout callout--seal">
+        <p><strong>实现备注（源码可见，不是评测结论）。</strong> <code>答记者问.py</code> 写了 <code>from t import get_years</code>，但同仓库 <code>t.py</code> 没有定义 <code>get_years</code>；同名函数写在 <code>新闻发布会.py</code> 里。 <code>clear_wen()</code> 使用 jieba，却在看到第一个词之后立即返回，且主流程未调用。<code>新闻发布会.py</code> 与 <code>t.py</code> 文件中部有一段与清洗无关的英文「倒车驾驶」JSON 字面量，未写入输出。</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p>步骤编号只为阅读，并不对应脚本函数名。</p>
+      <nav aria-label="页脚链接">
+        <a href="./examples.html">下一步：对照示例</a>
+        <a href="./format.html">返回格式规范</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="./js/site.js" defer></script>
+</body>
+</html>

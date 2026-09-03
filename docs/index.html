@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>概览 · 外交部记者问答清洗语料</title>
+  <meta name="description" content="本仓库是 MNBVC 外交部记者问答数据的通用清洗脚本集合。本站依据 README 与源码整理格式、清洗逻辑与对照示例，并链向 Hugging Face 数据集。">
+  <link rel="canonical" href="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/">
+  <meta name="theme-color" content="#f3eee3">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="外交部记者问答清洗语料">
+  <meta property="og:title" content="概览 · 外交部记者问答清洗语料">
+  <meta property="og:description" content="MNBVC 外交部记者问答清洗脚本与格式说明。只陈述仓库可核验内容。">
+  <meta property="og:url" content="https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="概览 · 外交部记者问答清洗语料">
+  <meta name="twitter:description" content="MNBVC 外交部记者问答清洗脚本与格式说明。">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Noto+Sans+SC:wght@400;700&amp;family=Noto+Serif+SC:wght@400;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "外交部记者问答清洗语料",
+    "inLanguage": "zh-Hans",
+    "url": "https://unstoppablecurry.github.io/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc/",
+    "description": "MNBVC 外交部记者问答数据的清洗脚本说明、格式规范与 README 对照示例。",
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="./">
+        <span class="brand__mark" aria-hidden="true">问</span>
+        <span class="brand__text">
+          <span class="brand__title">外交部记者问答清洗语料</span>
+          <span class="brand__sub">MNBVC 清洗脚本与格式说明</span>
+        </span>
+      </a>
+      <button type="button" class="nav-toggle" data-nav-toggle aria-controls="site-nav" aria-expanded="false">菜单</button>
+      <nav id="site-nav" class="site-nav" data-nav aria-label="主导航">
+        <ul>
+          <li><a href="./" aria-current="page">概览</a></li>
+          <li><a href="./format.html">格式规范</a></li>
+          <li><a href="./pipeline.html">清洗逻辑</a></li>
+          <li><a href="./examples.html">对照示例</a></li>
+          <li><a href="./scripts.html">脚本与清单</a></li>
+          <li><a href="./notes.html">证据与声明</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <p class="kicker">Dataset documentation</p>
+        <h1>把带标签的记者会网页，收成可对齐的问答记录</h1>
+        <p class="lede">本仓库是 MNBVC 项目下的通用清洗脚本集合，面向外交部记者问答网页与中英对照文档。本站不是交互式演示应用，而是依据 README 与源码整理的可读文本/数据说明：格式字段、清洗步骤、以及仓库里已经写出的清洗前后例子。</p>
+        <div class="hero-actions">
+          <a class="button" href="https://huggingface.co/datasets/Iron-man/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs" rel="noopener noreferrer">Hugging Face 数据集</a>
+          <a class="button button--ghost" href="https://github.com/UnstoppableCurry/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc" rel="noopener noreferrer">GitHub 仓库</a>
+          <a class="button button--ghost" href="./examples.html">查看对照示例</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap main">
+      <aside class="callout callout--warn" aria-label="证据范围">
+        <p>下列数量均来自仓库 README 的记载，或对本仓库文件的直接计数。本站不重新统计清洗结果，也不把 URL 清单行数等同于语料条数。</p>
+      </aside>
+
+      <dl class="stat-grid">
+        <div class="stat">
+          <dt>shtml 老版本（README）</dt>
+          <dd>353 文件 / 2260 条</dd>
+          <p>README「数据格式」一节原文。</p>
+        </div>
+        <div class="stat">
+          <dt>shtml 新版本（README）</dt>
+          <dd>1700 文件 / 12877 条</dd>
+          <p>README 称新版本格式已对齐；脚本进度分母也写了 1700。</p>
+        </div>
+        <div class="stat">
+          <dt>中英对照（README）</dt>
+          <dd>5 文件 / 38 条</dd>
+          <p>由 <code>clear_docx_data.py</code> 处理 <code>.docx</code>。</p>
+        </div>
+        <div class="stat">
+          <dt>本仓库 URL 清单</dt>
+          <dd>420 条</dd>
+          <p><code>wget_url.txt</code> 去空行后的唯一 URL；年月跨度 201802–202304。</p>
+        </div>
+      </dl>
+
+      <section class="prose" aria-labelledby="what-heading">
+        <h2 id="what-heading">仓库里有什么</h2>
+        <p>README 英文标题写作 <em>MNBVC General Cleaning Script for the Q&amp;A Dataset of Foreign Ministry Journalists</em>。脚本按代际分成两组：</p>
+        <ul>
+          <li>已废弃：<code>clear_shtml_data.py</code> 清洗 <code>.shtml</code>，<code>clear_docx_data.py</code> 清洗中英对照 <code>.docx</code>。</li>
+          <li>现行：<code>答记者问.py</code> 与 <code>新闻发布会.py</code>，对网页文本做正则切分，并写出 jsonlines。</li>
+        </ul>
+        <p>发布后的语料在 Hugging Face 数据集 <a href="https://huggingface.co/datasets/Iron-man/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs" rel="noopener noreferrer"><code>Iron-man/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs</code></a>。该地址为 README 给出的链接；访问时会重定向到同名数据集页 <code>wangtianxin/…</code>。本站不转载下载量、点赞或其他平台运营数字。</p>
+      </section>
+
+      <nav class="link-grid" aria-label="文档栏目">
+        <a class="card" href="./format.html">
+          <p class="card__label">01</p>
+          <h3>格式规范</h3>
+          <p>shtml 网页记录、中英对照嵌套对象，以及现行脚本的「问 / 答 / 来源 / 元数据」字段。</p>
+        </a>
+        <a class="card" href="./pipeline.html">
+          <p class="card__label">02</p>
+          <h3>清洗逻辑</h3>
+          <p>从 HTML 标签、字号残留「14」、发言人姓名到问答切分的源码步骤。</p>
+        </a>
+        <a class="card" href="./examples.html">
+          <p class="card__label">03</p>
+          <h3>对照示例</h3>
+          <p>README 中的清洗前 HTML / 双语原文，以及清洗后的 JSON。不把不同问答强行配成一对。</p>
+        </a>
+        <a class="card" href="./scripts.html">
+          <p class="card__label">04</p>
+          <h3>脚本与清单</h3>
+          <p>依赖、输入路径、输出文件名，以及 <code>wget_url.txt</code> 的主机与年份分布。</p>
+        </a>
+        <a class="card" href="./notes.html">
+          <p class="card__label">05</p>
+          <h3>证据与声明</h3>
+          <p>本站写了什么、没写什么：许可证、来源边界，以及源码里可见的实现备注。</p>
+        </a>
+        <a class="card" href="https://huggingface.co/datasets/Iron-man/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs" rel="noopener noreferrer">
+          <p class="card__label">HF</p>
+          <h3>数据集页</h3>
+          <p>到 Hugging Face 查看发布文件，而不是在本站假装在线查询语料。</p>
+        </a>
+      </nav>
+
+      <section class="prose" aria-labelledby="start-heading">
+        <h2 id="start-heading">本地运行（README）</h2>
+        <ol>
+          <li>安装依赖：<code>pip install -r requirements.txt</code></li>
+          <li>现行网页清洗：<code>python 答记者问.py</code> 或 <code>python 新闻发布会.py</code></li>
+          <li>老版本脚本仍保留在仓库中，README 已标明废弃。</li>
+        </ol>
+        <p><code>requirements.txt</code> 现列为 <code>jsonlines</code>、<code>bs4</code>、<code>python-docx</code>。部分脚本还 <code>import jieba</code>，但未写入该依赖文件。</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <p>许可证：README 记载 MIT。本页只整理仓库可核验内容。</p>
+      <nav aria-label="页脚链接">
+        <a href="./notes.html">证据与声明</a>
+        <a href="https://github.com/UnstoppableCurry/QA_with_reporters_from_the_Ministry_of_Foreign_Affair_mnbvc" rel="noopener noreferrer">GitHub</a>
+        <a href="https://huggingface.co/datasets/Iron-man/MNBVC-QA-with-reporters-from-the-Ministry-of-Foreign-Affairs" rel="noopener noreferrer">Hugging Face</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="./js/site.js" defer></script>
+</body>
+</html>
